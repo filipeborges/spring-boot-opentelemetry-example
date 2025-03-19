@@ -6,3 +6,10 @@ services:
       - "127.0.0.1:4317:4317"
       - "127.0.0.1:4318:4318"
       - "127.0.0.1:55679:55679"
+  kafka-zookeeper:
+    image: "spotify/kafka:latest"
+    environment:
+      ADVERTISED_HOST: localhost
+      ADVERTISED_PORT: 9092
+    ports:
+      - "127.0.0.1:9092:9092"
