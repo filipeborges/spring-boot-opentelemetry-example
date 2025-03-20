@@ -7,9 +7,6 @@ services:
       - "127.0.0.1:4318:4318"
       - "127.0.0.1:55679:55679"
   kafka-zookeeper:
-    image: "spotify/kafka:latest"
-    environment:
-      ADVERTISED_HOST: localhost
-      ADVERTISED_PORT: 9092
+    image: "apache/kafka:4.0.0"
     ports:
       - "127.0.0.1:9092:9092"
