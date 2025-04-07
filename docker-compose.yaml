@@ -10,3 +10,7 @@ services:
     image: "apache/kafka:4.0.0"
     ports:
       - "127.0.0.1:9092:9092"
+  mongodb:
+    image: "bitnami/mongodb:8.0.6"
+    ports:
+      - "127.0.0.1:27017:27017"
