@@ -31,3 +31,10 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.named('bootRun') {
+	systemProperty 'otel.service.name', 'spring-boot-opentelemetry-demo'
+	jvmArgs = [
+	        "-javaagent:./opentelemetry-javaagent-2.15.0.jar"
+	]
+}
