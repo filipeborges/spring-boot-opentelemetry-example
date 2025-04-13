@@ -13,8 +13,13 @@ make_http_request () {
 	curl -X GET "http://localhost:8080/${path}"
 }
 
+make_http_request_2() {
+  curl -v -X POST "http://localhost:8080/hello-world" -H "Content-Type: application/json" -d '{"message":"Hello World", "language":"EN"}'
+}
+
 while true; do
 	clear
 	make_http_request
+	make_http_request_2
 	sleep 5
 done
