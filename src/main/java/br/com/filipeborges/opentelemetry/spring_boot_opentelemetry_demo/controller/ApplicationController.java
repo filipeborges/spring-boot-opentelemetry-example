@@ -47,6 +47,7 @@ public class ApplicationController {
             ServerHttpRequest request
     ) {
         return helloWorldRepository.save(helloWorld)
+                // spring boot open telemetry dep does not correlate mongodb ops correctly
                 .zipWhen(hW -> auditService.audit(request.getRemoteAddress().getAddress().getHostAddress(), hW.getId()))
                 .map(Tuple2::getT1);
     }
