@@ -4,6 +4,8 @@ import br.com.filipeborges.opentelemetry.spring_boot_opentelemetry_demo.client.H
 import br.com.filipeborges.opentelemetry.spring_boot_opentelemetry_demo.model.HelloWorld;
 import br.com.filipeborges.opentelemetry.spring_boot_opentelemetry_demo.repository.relational.HelloWorldRepository;
 import br.com.filipeborges.opentelemetry.spring_boot_opentelemetry_demo.service.AuditService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import reactor.util.function.Tuple2;
 
 @RestController
 public class ApplicationController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
 
     private HelloWorldRepository helloWorldRepository;
     private AuditService auditService;
@@ -32,11 +36,13 @@ public class ApplicationController {
 
     @GetMapping(value = "/hello-world", produces = MediaType.TEXT_PLAIN_VALUE)
     public Mono<String> helloWorld() {
+        LOGGER.debug("Will return hello world data");
         return Mono.just("Hello World");
     }
 
     @GetMapping(value = "/hello-world/uppercase", produces = MediaType.TEXT_PLAIN_VALUE)
     public Mono<String> helloWorldUpperCase() {
+        LOGGER.debug("Will return hello world uppercase data");
         return helloWorldClient.getHelloWorld()
                 .map(String::toUpperCase);
     }
@@ -46,6 +52,7 @@ public class ApplicationController {
             @RequestBody HelloWorld helloWorld,
             ServerHttpRequest request
     ) {
+        LOGGER.debug("Will create hello world");
         return helloWorldRepository.save(helloWorld)
                 // spring boot open telemetry dep does not correlate mongodb ops correctly
                 .zipWhen(hW -> auditService.audit(request.getRemoteAddress().getAddress().getHostAddress(), hW.getId()))
